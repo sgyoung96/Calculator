@@ -173,75 +173,85 @@ class ViewController: UIViewController {
         // *************************************************************************
         
         // 2. 우선순위대로 연산하기 시작!
-        var index = 0
-        guard index == finalArray.firstIndex(of: "/") else {
-            return index = 0
-        }
         
-        if index > 0 {
-            result = Double(finalArray[index - 1])! / Double(finalArray[index + 1])!
-            finalArray.remove(at: index - 1)
-            finalArray.remove(at: index)
-            finalArray.remove(at: index + 1)
-            finalArray.insert(String(result), at: index - 1)
-            print(finalArray)
-        } else if index == 0 {
-            guard index == finalArray.firstIndex(of: "x") else {
-                return index = 0
-            }
-            if index > 0 {
-                
-            } else if index == 0 {
-                guard index == finalArray.firstIndex(of: "-") else {
-                    return index = 0
-                }
-                if index > 0 {
-                    
-                } else if index == 0 {
-                    guard index == finalArray.firstIndex(of: "+") else {
-                        return index = 0
-                    }
-                    if index > 0 {
-                        
-                    } else if index == 0 {
-                        result = 0
-                    }
-                }
+        var index: Int? = 0
+        var tempResult: Double = 0
+
+        // 나누기 연산
+        for i in 0...finalArray.count - 1 {
+            
+            index = finalArray.firstIndex(of: "/")
+            print("index : " + "\(index)")
+            
+            if index == nil {
+                continue
+            } else if index != nil {
+                tempResult = Double(finalArray[index! - 1])! / Double(finalArray[index! + 1])!
+                finalArray.remove(at: index! + 1)
+                finalArray.remove(at: index!)
+                finalArray.remove(at: index! - 1)
+                finalArray.insert(String(tempResult), at: index! - 1)
+                print("finalArray : " + "\(finalArray)")
             }
         }
         
+        // 곱하기 연산
+        for i in 0...finalArray.count - 1 {
+            
+            index = finalArray.firstIndex(of: "x")
+            print("index : " + "\(index)")
+            
+            if index == nil {
+                continue
+            } else if index != nil {
+                tempResult = Double(finalArray[index! - 1])! * Double(finalArray[index! + 1])!
+                finalArray.remove(at: index! + 1)
+                finalArray.remove(at: index!)
+                finalArray.remove(at: index! - 1)
+                finalArray.insert(String(tempResult), at: index! - 1)
+                print("finalArray : " + "\(finalArray)")
+            }
+        }
         
+        // 빼기 연산
+        for i in 0...finalArray.count - 1 {
+            
+            index = finalArray.firstIndex(of: "-")
+            print("index : " + "\(index)")
+            
+            if index == nil {
+                continue
+            } else if index != nil {
+                tempResult = Double(finalArray[index! - 1])! - Double(finalArray[index! + 1])!
+                finalArray.remove(at: index! + 1)
+                finalArray.remove(at: index!)
+                finalArray.remove(at: index! - 1)
+                finalArray.insert(String(tempResult), at: index! - 1)
+                print("finalArray : " + "\(finalArray)")
+            }
+        }
         
-//        var resultA = seperatedA.last
-//        var resultB = seperatedB.first
-//        var doubleResultA = Double(resultA!)
-//        var doubleResultB = Double(resultB!)
-//
-//        var tempResult: Double = 0
-//        if seperatedByText[position] == "x" {
-//            tempResult = doubleResultA! * doubleResultB!
-//            print("tempResult : " + "\(tempResult)")
-//        } else if seperatedByText[position] == "/" {
-//            tempResult = doubleResultA! / doubleResultB!
-//            print("tempResult : " + "\(tempResult)")
-//        }
-//
-//        // 다음 곱하기와 나누기가 오는 연산자의 위치 구하기
-//        for i in position + 1...seperatedByText.count - 1 {
-//            if seperatedByText[i] == "x" || seperatedByText[i] == "/" {
-//                position = i
-//                break
-//            }
-//        }
-//        print("position : " + "\(position)")
-//
-//        var tempResult2: Double = 0
-//        if seperatedByText[position] == "x" {
-//            tempResult2 = tempResult * Double(seperatedB[0])!
-//        } else if seperatedByText[position] == "/" {
-//            tempResult2 = tempResult / Double(seperatedB[0])!
-//        }
-    
+        // 더하기 연산
+        for i in 0...finalArray.count - 1 {
+            
+            index = finalArray.firstIndex(of: "+")
+            print("index : " + "\(index)")
+            
+            if index == nil {
+                continue
+            } else if index != nil {
+                tempResult = Double(finalArray[index! - 1])! + Double(finalArray[index! + 1])!
+                finalArray.remove(at: index! + 1)
+                finalArray.remove(at: index!)
+                finalArray.remove(at: index! - 1)
+                finalArray.insert(String(tempResult), at: index! - 1)
+                print("finalArray : " + "\(finalArray)")
+            }
+        }
+        
+        print("tempResult : " + "\(tempResult)")
+        
+        result = tempResult
         lblTextArea.text = String(result)
 
     }
