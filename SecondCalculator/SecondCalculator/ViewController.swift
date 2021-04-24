@@ -15,14 +15,6 @@ class ViewController: UIViewController {
     // 최종값
     var result: Double = 0
 
-    // 사칙연산을 담을 변수
-    var flag: String = ""
-    
-    // 숫자 버튼의 값을 담고 있을 변수
-    var numberPrev: Double = 0
-    var numberNext: Double = 0
-    var numberArray: [Double] = [Double]()
-
     // 계산값을 뿌려줄 공간
     @IBOutlet var lblTextArea: UILabel!
     
@@ -39,69 +31,6 @@ class ViewController: UIViewController {
         
         self.text = self.text + text
         lblTextArea.text = self.text
-    }
-    
-    func addNumber(operator: String) {
-//        var addResult: Double = Double((lblTextArea.text?.components(separatedBy: ["+"])[0])!)! + Double((lblTextArea.text?.components(separatedBy: ["+"])[1])!)!
-        
-        var addResult: Double = 0
-        guard var operatorResult = lblTextArea.text?.components(separatedBy: "+").count else {
-            return
-        }
-        
-        for i in 0...operatorResult - 1 {
-            addResult = addResult + Double((lblTextArea.text?.components(separatedBy: ["+"])[i])!)!
-        }
-        
-        lblTextArea.text =  String(addResult)
-    }
-    
-    func minusNumber(operator: String) {
-        var numberArray = lblTextArea.text?.components(separatedBy: "-")
-        
-        guard var operatorResult = lblTextArea.text?.components(separatedBy: "-").count else {
-            return
-        }
-        
-        var result = Double(numberArray![0])!
-        
-        for i in 1...operatorResult - 1 {
-            result = result - Double(numberArray![i])!
-        }
-        
-        lblTextArea.text = String(result)
-    }
-    
-    func multiplyNumber(operator: String) {
-        var multiplyResult: Double = 1
-        
-        guard var operatorResult = lblTextArea.text?.components(separatedBy: "x").count else {
-            return
-        }
-        
-        for i in 0...operatorResult - 1 {
-            multiplyResult = multiplyResult * Double((lblTextArea.text?.components(separatedBy: "x")[i])!)!
-        }
-        
-        lblTextArea.text = String(multiplyResult)
-        
-    }
-    
-    func divideNumber(operator: String) {
-        var numberArray = lblTextArea.text?.components(separatedBy: "/")
-        
-        var operatorResult = lblTextArea.text?.components(separatedBy: "/").count
-        
-//        var dividedResult = Double(numberArray![0])! / Double(numberArray![1])!
-//        dividedResult = dividedResult / Double(numberArray![2])!
-        var dividedResult = Double(numberArray![0])!
-        
-        for i in 1...operatorResult! - 1 {
-            dividedResult = dividedResult / Double(numberArray![i])!
-        }
-        
-        lblTextArea.text = String(dividedResult)
-        
     }
 
     @IBAction func btnOne(_ sender: UIButton) {
@@ -146,22 +75,18 @@ class ViewController: UIViewController {
     
     @IBAction func btnAdd(_ sender: UIButton) {
         showText(text: "+")
-        self.flag = "+"
     }
     
     @IBAction func btnMinus(_ sender: UIButton) {
         showText(text: "-")
-        self.flag = "-"
     }
     
     @IBAction func btnMultiply(_ sender: UIButton) {
         showText(text: "x")
-        self.flag = "x"
     }
     
     @IBAction func btnDivide(_ sender: UIButton) {
         showText(text: "/")
-        self.flag = "/"
     }
     
     @IBAction func btnDot(_ sender: UIButton) {
@@ -169,12 +94,6 @@ class ViewController: UIViewController {
     }
     
     @IBAction func btnResult(_ sender: UIButton) {
-        
-//        var resultArray = Array(self.text)
-//
-//        print(resultArray)
-//
-//        var doubleArray = [Double](resultArray)
 
         // 입력한 수식에서 숫자만 문자열로 발라내기
         var seperatedNumber = self.text.components(separatedBy: ["+", "-", "x", "/"])
@@ -270,17 +189,7 @@ class ViewController: UIViewController {
         }
         
         lblTextArea.text = String(result)
-        
-        // 만약 이 연산자이면 해당하는 연산자 메소드 호출
-//        if flag == "+" {
-//            addNumber(operator: "+")
-//        } else if flag == "-" {
-//            minusNumber(operator: "-")
-//        } else if flag == "x" {
-//            multiplyNumber(operator: "x")
-//        } else if flag == "/" {
-//            divideNumber(operator: "/")
-//        }
+
     }
     
     @IBAction func btnClear(_ sender: UIButton) {
