@@ -95,17 +95,15 @@ class ViewController: UIViewController {
     
     @IBAction func btnResult(_ sender: UIButton) {
 
-//        // 연산자 우선순위 적용 (모든 digit 를 1개 단위로 잘라내어 배열로 저장하고 이 데이터를 가지고 핸들링 한다.)
-//        /*
-//         1. 곱하기, 나누기를 기준으로 문자열 잘라내기
-//         2. 잘라낸 문자열을 각각 앞과 뒤로 분리해 변수에 담기
-//         3. 앞 변수의 맨 뒤 인덱스와 뒤 변수의 맨 앞 인덱스를 곱하기나 나누기 연산 하기
-//         */
-//
+        /*
+         1. 숫자와 연산자를 각각 골라내어 String 배열로 만든다. (숫자 자릿수 상관x)
+         2. 우선순위대로 연산을 시작한다.
+         */
+
         let seperatedByText = Array(self.text)
         print("sepeatedByText : " + "\(seperatedByText)")
         
-            
+        // 1. 숫자와 연산자를 각각 골라내어 String 배열로 만든다. (숫자 자릿수 상관x)
         // 입력한 수식에서 연산자만 문자열로 발라내기
         var seperatedOperator = self.text.components(separatedBy: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."])
         print("seperatedOperator : " + "\(seperatedOperator)")
@@ -133,45 +131,116 @@ class ViewController: UIViewController {
         }
         print("lastIndex : " + "\(lastIndex)")
         
-        var a: String = String(seperatedByText[0...position - 1])
-        print("a : " + "\(a)")
-        var seperatedA = a.components(separatedBy: ["+", "-", "x", "/"])
-        print("seperatedA : " + "\(seperatedA)")
-        
-        var b: String = String(seperatedByText[position + 1...lastIndex])
-        print("b : " + "\(b)")
-        var seperatedB = b.components(separatedBy: ["+", "-", "x", "/"])
-        print("seperatedB : " + "\(seperatedB)")
-        
-        var resultA = seperatedA.last
-        var resultB = seperatedB.first
-        var doubleResultA = Double(resultA!)
-        var doubleResultB = Double(resultB!)
-        
-        var tempResult: Double = 0
-        if seperatedByText[position] == "x" {
-            tempResult = doubleResultA! * doubleResultB!
-            print("tempResult : " + "\(tempResult)")
-        } else if seperatedByText[position] == "/" {
-            tempResult = doubleResultA! / doubleResultB!
-            print("tempResult : " + "\(tempResult)")
+        var a: String
+        var seperatedA: [String] = []
+        var b: String
+        var seperatedB: [String] = []
+        if position > 0 {
+            a = String(seperatedByText[0...position - 1])
+            print("a : " + "\(a)")
+            seperatedA = a.components(separatedBy: ["+", "-", "x", "/"])
+            print("seperatedA : " + "\(seperatedA)")
+            
+            b = String(seperatedByText[position + 1...lastIndex])
+            print("b : " + "\(b)")
+            seperatedB = b.components(separatedBy: ["+", "-", "x", "/"])
+            print("seperatedB : " + "\(seperatedB)")
+        } else {
+            let i = seperatedByText.count
+            a = String(seperatedByText[0...i - 1])
+            print("a : " + "\(a)")
+            seperatedA = a.components(separatedBy: ["+", "-", "x", "/"])
+            print("seperatedA : " + "\(seperatedA)")
+            
+            b = ""
+            print("b : " + "\(b)")
+            seperatedB = []
+            print("seperatedB : " + "\(seperatedB)")
         }
         
-        // 다음 곱하기와 나누기가 오는 연산자의 위치 구하기
-        for i in position + 1...seperatedByText.count - 1 {
-            if seperatedByText[i] == "x" || seperatedByText[i] == "/" {
-                position = i
-                break
+        // 최종 문자열 배열 구해내기 (숫자와 연산자가 순서대로 입력되어 있는 배열)
+        var finalArrayByNumber: [String] = seperatedA + seperatedB
+        print("finalArrayOfNumbers : " + "\(finalArrayByNumber)")
+        
+        var finalArray: [String] = []
+        for i in 0...operatorArray.count - 1 {
+            finalArray.append(finalArrayByNumber[i])
+            finalArray.append(operatorArray[i])
+        }
+        finalArray.append(finalArrayByNumber.last!)
+        print("finalArray : " + "\(finalArray)")
+        
+        // *************************************************************************
+        
+        // 2. 우선순위대로 연산하기 시작!
+        var index = 0
+        guard index == finalArray.firstIndex(of: "/") else {
+            return index = 0
+        }
+        
+        if index > 0 {
+            result = Double(finalArray[index - 1])! / Double(finalArray[index + 1])!
+            finalArray.remove(at: index - 1)
+            finalArray.remove(at: index)
+            finalArray.remove(at: index + 1)
+            finalArray.insert(String(result), at: index - 1)
+            print(finalArray)
+        } else if index == 0 {
+            guard index == finalArray.firstIndex(of: "x") else {
+                return index = 0
+            }
+            if index > 0 {
+                
+            } else if index == 0 {
+                guard index == finalArray.firstIndex(of: "-") else {
+                    return index = 0
+                }
+                if index > 0 {
+                    
+                } else if index == 0 {
+                    guard index == finalArray.firstIndex(of: "+") else {
+                        return index = 0
+                    }
+                    if index > 0 {
+                        
+                    } else if index == 0 {
+                        result = 0
+                    }
+                }
             }
         }
-        print("position : " + "\(position)")
         
-        var tempResult2: Double = 0
-        if seperatedByText[position] == "x" {
-            tempResult2 = tempResult * Double(seperatedB[0])!
-        } else if seperatedByText[position] == "/" {
-            tempResult2 = tempResult / Double(seperatedB[0])!
-        }
+        
+        
+//        var resultA = seperatedA.last
+//        var resultB = seperatedB.first
+//        var doubleResultA = Double(resultA!)
+//        var doubleResultB = Double(resultB!)
+//
+//        var tempResult: Double = 0
+//        if seperatedByText[position] == "x" {
+//            tempResult = doubleResultA! * doubleResultB!
+//            print("tempResult : " + "\(tempResult)")
+//        } else if seperatedByText[position] == "/" {
+//            tempResult = doubleResultA! / doubleResultB!
+//            print("tempResult : " + "\(tempResult)")
+//        }
+//
+//        // 다음 곱하기와 나누기가 오는 연산자의 위치 구하기
+//        for i in position + 1...seperatedByText.count - 1 {
+//            if seperatedByText[i] == "x" || seperatedByText[i] == "/" {
+//                position = i
+//                break
+//            }
+//        }
+//        print("position : " + "\(position)")
+//
+//        var tempResult2: Double = 0
+//        if seperatedByText[position] == "x" {
+//            tempResult2 = tempResult * Double(seperatedB[0])!
+//        } else if seperatedByText[position] == "/" {
+//            tempResult2 = tempResult / Double(seperatedB[0])!
+//        }
     
         lblTextArea.text = String(result)
 
