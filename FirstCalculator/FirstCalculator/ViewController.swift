@@ -12,12 +12,6 @@ class ViewController: UIViewController {
     // 라벨에 뿌려줄 값을 담은 변수
     var text: String = ""
     
-//    // 최종값
-//    var result: String = ""
-//
-//    // 숫자 버튼의 값을 담고 있을 변수
-//    var number: Double = 0
-//
     // 사칙연산을 담을 변수
     var flag: String = ""
     
@@ -37,7 +31,6 @@ class ViewController: UIViewController {
     }
     
     func addNumber(operator: String) {
-//        var addResult: Double = Double((lblTextArea.text?.components(separatedBy: ["+"])[0])!)! + Double((lblTextArea.text?.components(separatedBy: ["+"])[1])!)!
         
         var addResult: Double = 0
         guard var operatorResult = lblTextArea.text?.components(separatedBy: "+").count else {
@@ -52,8 +45,6 @@ class ViewController: UIViewController {
     }
     
     func minusNumber(operator: String) {
-        // 현재 - 한 번만 계산 되고, - 두번 쓰는 것은 안 됨.
-//        var minusResult: Double = Double((lblTextArea.text?.components(separatedBy: ["-"])[0])!)!
         var numberArray = lblTextArea.text?.components(separatedBy: "-")
         
         guard var operatorResult = lblTextArea.text?.components(separatedBy: "-").count else {
