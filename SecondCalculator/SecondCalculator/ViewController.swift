@@ -57,16 +57,12 @@ class ViewController: UIViewController {
     }
     
     func minusNumber(operator: String) {
-        // 현재 - 한 번만 계산 되고, - 두번 쓰는 것은 안 됨.
-//        var minusResult: Double = Double((lblTextArea.text?.components(separatedBy: ["-"])[0])!)!
         var numberArray = lblTextArea.text?.components(separatedBy: "-")
         
         guard var operatorResult = lblTextArea.text?.components(separatedBy: "-").count else {
             return
         }
         
-//        var result = Double(numberArray![0])! - Double(numberArray![1])!
-//        result = minusResult - Double(numberArray![2])!
         var result = Double(numberArray![0])!
         
         for i in 1...operatorResult - 1 {
@@ -180,26 +176,102 @@ class ViewController: UIViewController {
 //
 //        var doubleArray = [Double](resultArray)
 
-        
+        // 입력한 수식에서 숫자만 문자열로 발라내기
         var seperatedNumber = self.text.components(separatedBy: ["+", "-", "x", "/"])
-        //print(seperatedNumber)
+        print(seperatedNumber)
         
-        var seperatedOperator = self.text.components(separatedBy: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
+        // 입력한 수식에서 연산자만 문자열로 발라내기
+        var seperatedOperator = self.text.components(separatedBy: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."])
         seperatedOperator.removeFirst()
         seperatedOperator.removeLast()
-        
         var operatorArray: [String] = []
-        
         for i in 0...seperatedOperator.count - 1 {
             if seperatedOperator[i] != "" {
                 operatorArray.append(seperatedOperator[i])
             }
-            //print(operatorArray)
+        }
+        print(operatorArray)
+        
+        // 숫자로 발라낸 문자열을 숫자형으로 형변환하기
+        var changeNumberFromString: [Double] = []
+        for i in 0...seperatedNumber.count - 1 {
+            changeNumberFromString.append(Double(seperatedNumber[i])!)
+        }
+        print(changeNumberFromString)
+        
+        // 수식을 합쳐서 계산식으로 만들기
+        var result: Double = changeNumberFromString[0]
+        for i in 0...operatorArray.count - 1 {
+            // 연산자 수만큼 돌면서 계산
+            /*
+             i = 0 일 때,
+             만약 첫번째 연산자가 + 이면, 첫번째 숫자[i = 0]와 두번째 숫자[i = 1]를 더한다[i = 0].
+             만약 첫번째 연산자가 - 이면, 첫번째 숫자와 두번째 숫자를 뺀다.
+             만약 첫번째 연산자가 x 이면, 첫번째 숫자와 두번째 숫자를 곱한다.
+             만약 첫번째 연산자가 / 이면, 첫번째 숫자와 두번째 숫자를 나눈다.
+             
+             i = 1 일 때,
+             만약 두번째 연산자가 + 이면, 연산된 결과와 세번째 숫자[i = 2] 를 더한다[i = 1].
+             만약 두번째 연산자가 - 이면, 연산된 결과와 세번째 숫자[i = 2] 를 뺀다.
+             만약 두번째 연산자가 x 이면, 연산된 결과와 세번째 숫자[i = 2] 를 곱한다.
+             만약 두번째 연산자가 / 이면, 연산된 결과와 세번째 숫자[i = 2] 를 나눈다.
+             
+             i = 2 일 때,
+             만약 세번째 연산자가 + 이면, 연산된 결과와 네번째 숫자[i = 3] 를 더한다[i = 2].
+             만약 세번째 연산자가 - 이면, 연산된 결과와 네번째 숫자[i = 3] 를 뺀다.
+             만약 세번째 연산자가 x 이면, 연산된 결과와 네번째 숫자[i = 3] 를 곱한다.
+             만약 세번째 연산자가 / 이면, 연산된 결과와 네번째 숫자[i = 3] 를 나눈다.
+            */
+            
+/*            if i == 0 {
+                switch operatorArray[0] {
+                case "+" :
+                    result = changeNumberFromString[i] + changeNumberFromString[i + 1]
+                case "-" :
+                    result = changeNumberFromString[i] - changeNumberFromString[i + 1]
+                case "x" :
+                    result = changeNumberFromString[i] * changeNumberFromString[i + 1]
+                case "/" :
+                    result = changeNumberFromString[i] / changeNumberFromString[i + 1]
+                default:
+                    return
+                }
+                print(result)
+            } else {
+                switch operatorArray[i] {
+                case "+" :
+                    result = result + changeNumberFromString[i + 1]
+                case "-" :
+                    result = result - changeNumberFromString[i + 1]
+                case "x" :
+                    result = result * changeNumberFromString[i + 1]
+                case "/" :
+                    result = result / changeNumberFromString[i + 1]
+                default:
+                    return
+                }
+            }
+ */
+            
+            switch operatorArray[i] {
+            case "+" :
+                result = result + changeNumberFromString[i + 1]
+            case "-" :
+                result = result - changeNumberFromString[i + 1]
+            case "x" :
+                result = result * changeNumberFromString[i + 1]
+            case "/" :
+                result = result / changeNumberFromString[i + 1]
+            default:
+                return
+            }
+            
+            print(result)
         }
         
-        //print(operatorArray)
+        lblTextArea.text = String(result)
         
-        
+        // 만약 이 연산자이면 해당하는 연산자 메소드 호출
 //        if flag == "+" {
 //            addNumber(operator: "+")
 //        } else if flag == "-" {
