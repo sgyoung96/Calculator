@@ -12,15 +12,17 @@ class ViewController: UIViewController {
     // 라벨에 뿌려줄 값을 담은 변수
     var text: String = ""
     
-//    // 최종값
-//    var result: String = ""
-//
-//    // 숫자 버튼의 값을 담고 있을 변수
-//    var number: Double = 0
-//
+    // 최종값
+    var result: Double = 0
+
     // 사칙연산을 담을 변수
     var flag: String = ""
     
+    // 숫자 버튼의 값을 담고 있을 변수
+    var numberPrev: Double = 0
+    var numberNext: Double = 0
+    var numberArray: [Double] = [Double]()
+
     // 계산값을 뿌려줄 공간
     @IBOutlet var lblTextArea: UILabel!
     
@@ -32,8 +34,11 @@ class ViewController: UIViewController {
     }
 
     func showText(text: String) {
-        self.text = text
-        lblTextArea.text = lblTextArea.text! + self.text
+//        self.text = text
+//        lblTextArea.text = lblTextArea.text! + self.text
+        
+        self.text = self.text + text
+        lblTextArea.text = self.text
     }
     
     func addNumber(operator: String) {
@@ -168,15 +173,42 @@ class ViewController: UIViewController {
     }
     
     @IBAction func btnResult(_ sender: UIButton) {
-        if flag == "+" {
-            addNumber(operator: "+")
-        } else if flag == "-" {
-            minusNumber(operator: "-")
-        } else if flag == "x" {
-            multiplyNumber(operator: "x")
-        } else if flag == "/" {
-            divideNumber(operator: "/")
+        
+//        var resultArray = Array(self.text)
+//
+//        print(resultArray)
+//
+//        var doubleArray = [Double](resultArray)
+
+        
+        var seperatedNumber = self.text.components(separatedBy: ["+", "-", "x", "/"])
+        //print(seperatedNumber)
+        
+        var seperatedOperator = self.text.components(separatedBy: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"])
+        seperatedOperator.removeFirst()
+        seperatedOperator.removeLast()
+        
+        var operatorArray: [String] = []
+        
+        for i in 0...seperatedOperator.count - 1 {
+            if seperatedOperator[i] != "" {
+                operatorArray.append(seperatedOperator[i])
+            }
+            //print(operatorArray)
         }
+        
+        //print(operatorArray)
+        
+        
+//        if flag == "+" {
+//            addNumber(operator: "+")
+//        } else if flag == "-" {
+//            minusNumber(operator: "-")
+//        } else if flag == "x" {
+//            multiplyNumber(operator: "x")
+//        } else if flag == "/" {
+//            divideNumber(operator: "/")
+//        }
     }
     
     @IBAction func btnClear(_ sender: UIButton) {
