@@ -95,99 +95,84 @@ class ViewController: UIViewController {
     
     @IBAction func btnResult(_ sender: UIButton) {
 
-        // 입력한 수식에서 숫자만 문자열로 발라내기
-        var seperatedNumber = self.text.components(separatedBy: ["+", "-", "x", "/"])
-        print(seperatedNumber)
+//        // 연산자 우선순위 적용 (모든 digit 를 1개 단위로 잘라내어 배열로 저장하고 이 데이터를 가지고 핸들링 한다.)
+//        /*
+//         1. 곱하기, 나누기를 기준으로 문자열 잘라내기
+//         2. 잘라낸 문자열을 각각 앞과 뒤로 분리해 변수에 담기
+//         3. 앞 변수의 맨 뒤 인덱스와 뒤 변수의 맨 앞 인덱스를 곱하기나 나누기 연산 하기
+//         */
+//
+        let seperatedByText = Array(self.text)
+        print("sepeatedByText : " + "\(seperatedByText)")
         
+            
         // 입력한 수식에서 연산자만 문자열로 발라내기
         var seperatedOperator = self.text.components(separatedBy: ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."])
-        seperatedOperator.removeFirst()
-        seperatedOperator.removeLast()
+        print("seperatedOperator : " + "\(seperatedOperator)")
         var operatorArray: [String] = []
         for i in 0...seperatedOperator.count - 1 {
             if seperatedOperator[i] != "" {
-                operatorArray.append(seperatedOperator[i])
+                operatorArray.append(seperatedOperator[i]) // 공백을 제외한 연산자를 배열에 추가
             }
         }
-        print(operatorArray)
+        print("operatorArray : " + "\(operatorArray)")
         
-        // 숫자로 발라낸 문자열을 숫자형으로 형변환하기
-        var changeNumberFromString: [Double] = []
-        for i in 0...seperatedNumber.count - 1 {
-            changeNumberFromString.append(Double(seperatedNumber[i])!)
+        // 첫번째로 곱하기나 나누기 연산자가 오는 인덱스 구해내기
+        var position: Int = 0
+        for i in 0...seperatedByText.count - 1 {
+            if seperatedByText[i] == "x" || seperatedByText[i] == "/" {
+                position = i
+                break
+            }
         }
-        print(changeNumberFromString)
+        print("position : " + "\(position)")
         
-        // 수식을 합쳐서 계산식으로 만들기
-        var result: Double = changeNumberFromString[0]
-        for i in 0...operatorArray.count - 1 {
-            // 연산자 수만큼 돌면서 계산
-            /*
-             i = 0 일 때,
-             만약 첫번째 연산자가 + 이면, 첫번째 숫자[i = 0]와 두번째 숫자[i = 1]를 더한다[i = 0].
-             만약 첫번째 연산자가 - 이면, 첫번째 숫자와 두번째 숫자를 뺀다.
-             만약 첫번째 연산자가 x 이면, 첫번째 숫자와 두번째 숫자를 곱한다.
-             만약 첫번째 연산자가 / 이면, 첫번째 숫자와 두번째 숫자를 나눈다.
-             
-             i = 1 일 때,
-             만약 두번째 연산자가 + 이면, 연산된 결과와 세번째 숫자[i = 2] 를 더한다[i = 1].
-             만약 두번째 연산자가 - 이면, 연산된 결과와 세번째 숫자[i = 2] 를 뺀다.
-             만약 두번째 연산자가 x 이면, 연산된 결과와 세번째 숫자[i = 2] 를 곱한다.
-             만약 두번째 연산자가 / 이면, 연산된 결과와 세번째 숫자[i = 2] 를 나눈다.
-             
-             i = 2 일 때,
-             만약 세번째 연산자가 + 이면, 연산된 결과와 네번째 숫자[i = 3] 를 더한다[i = 2].
-             만약 세번째 연산자가 - 이면, 연산된 결과와 네번째 숫자[i = 3] 를 뺀다.
-             만약 세번째 연산자가 x 이면, 연산된 결과와 네번째 숫자[i = 3] 를 곱한다.
-             만약 세번째 연산자가 / 이면, 연산된 결과와 네번째 숫자[i = 3] 를 나눈다.
-            */
-            
-/*            if i == 0 {
-                switch operatorArray[0] {
-                case "+" :
-                    result = changeNumberFromString[i] + changeNumberFromString[i + 1]
-                case "-" :
-                    result = changeNumberFromString[i] - changeNumberFromString[i + 1]
-                case "x" :
-                    result = changeNumberFromString[i] * changeNumberFromString[i + 1]
-                case "/" :
-                    result = changeNumberFromString[i] / changeNumberFromString[i + 1]
-                default:
-                    return
-                }
-                print(result)
-            } else {
-                switch operatorArray[i] {
-                case "+" :
-                    result = result + changeNumberFromString[i + 1]
-                case "-" :
-                    result = result - changeNumberFromString[i + 1]
-                case "x" :
-                    result = result * changeNumberFromString[i + 1]
-                case "/" :
-                    result = result / changeNumberFromString[i + 1]
-                default:
-                    return
-                }
-            }
- */
-            
-            switch operatorArray[i] {
-            case "+" :
-                result = result + changeNumberFromString[i + 1]
-            case "-" :
-                result = result - changeNumberFromString[i + 1]
-            case "x" :
-                result = result * changeNumberFromString[i + 1]
-            case "/" :
-                result = result / changeNumberFromString[i + 1]
-            default:
-                return
-            }
-            
-            print(result)
+        var lastIndex = 0
+        for i in 0...seperatedByText.count - 1 {
+            lastIndex = i
+        }
+        print("lastIndex : " + "\(lastIndex)")
+        
+        var a: String = String(seperatedByText[0...position - 1])
+        print("a : " + "\(a)")
+        var seperatedA = a.components(separatedBy: ["+", "-", "x", "/"])
+        print("seperatedA : " + "\(seperatedA)")
+        
+        var b: String = String(seperatedByText[position + 1...lastIndex])
+        print("b : " + "\(b)")
+        var seperatedB = b.components(separatedBy: ["+", "-", "x", "/"])
+        print("seperatedB : " + "\(seperatedB)")
+        
+        var resultA = seperatedA.last
+        var resultB = seperatedB.first
+        var doubleResultA = Double(resultA!)
+        var doubleResultB = Double(resultB!)
+        
+        var tempResult: Double = 0
+        if seperatedByText[position] == "x" {
+            tempResult = doubleResultA! * doubleResultB!
+            print("tempResult : " + "\(tempResult)")
+        } else if seperatedByText[position] == "/" {
+            tempResult = doubleResultA! / doubleResultB!
+            print("tempResult : " + "\(tempResult)")
         }
         
+        // 다음 곱하기와 나누기가 오는 연산자의 위치 구하기
+        for i in position + 1...seperatedByText.count - 1 {
+            if seperatedByText[i] == "x" || seperatedByText[i] == "/" {
+                position = i
+                break
+            }
+        }
+        print("position : " + "\(position)")
+        
+        var tempResult2: Double = 0
+        if seperatedByText[position] == "x" {
+            tempResult2 = tempResult * Double(seperatedB[0])!
+        } else if seperatedByText[position] == "/" {
+            tempResult2 = tempResult / Double(seperatedB[0])!
+        }
+    
         lblTextArea.text = String(result)
 
     }
