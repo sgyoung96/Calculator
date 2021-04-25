@@ -222,12 +222,25 @@ class ViewController: UIViewController {
             if index == nil {
                 continue
             } else if index != nil {
-                tempResult = Double(finalArray[index! - 1])! - Double(finalArray[index! + 1])!
-                finalArray.remove(at: index! + 1)
-                finalArray.remove(at: index!)
-                finalArray.remove(at: index! - 1)
-                finalArray.insert(String(tempResult), at: index! - 1)
-                print("finalArray : " + "\(finalArray)")
+                if finalArray[index! - 1] != "" {
+                    tempResult = Double(finalArray[index! - 1])! - Double(finalArray[index! + 1])!
+                    finalArray.remove(at: index! + 1)
+                    finalArray.remove(at: index!)
+                    finalArray.remove(at: index! - 1)
+                    finalArray.insert(String(tempResult), at: index! - 1)
+                    print("finalArray : " + "\(finalArray)")
+                } else if finalArray[index! - 1] == "" {
+                    finalArray.insert("0", at: index! - 1)
+                    print("finalArray : " + "\(finalArray)")
+                    finalArray.remove(at: index!)
+                    print("finalArray : " + "\(finalArray)")
+                    tempResult = Double(finalArray[index! - 1])! - Double(finalArray[index! + 1])!
+                    finalArray.remove(at: index! + 1)
+                    finalArray.remove(at: index!)
+                    finalArray.remove(at: index! - 1)
+                    finalArray.insert(String(tempResult), at: index! - 1)
+                    print("finalArray : " + "\(finalArray)")
+                }
             }
         }
         
